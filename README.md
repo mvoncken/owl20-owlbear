@@ -8,6 +8,7 @@ Local development
 * add http://localhost:5173/manifest.json as an owlbear extension.
 
 ### Control
+This project is marked as `ℹ️owl20-owlbear`
 ```mermaid
 graph TD
     beyond20[Beyond20 browser-ext]-->dndbeyond.com
