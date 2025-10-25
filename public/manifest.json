@@ -1,0 +1,16 @@
+{
+  "name": "Owl20",
+  "version": "0.2.0",
+  "manifest_version": 1,
+  "author": "Martijn Voncken",
+  "icon": "/b20.svg",
+  "homepage_url": "https://owl20.netlify.app",
+  "description": "Roll from DndBeyond using the Beyond20 browser extension,See 'LEARN MORE' for setup instructions",
+  "action": {
+    "title": "Owl20 – The Beyond20 Helper",
+    "icon": "/icon.svg",
+    "popover": "/owl20.html",
+    "height": 1200,
+    "width": 400
+  }
+}
