@@ -21,16 +21,16 @@ addEventListener("message", (event) => {
   //broadcastRoll(event) 
   switch(event.data.type) {
     case 'Beyond20_Roll':
-      console.log("Broadcasting roll:", event.data.data);
+      console.log("owl20-owlbear: Broadcasting roll:", event.data.data);
       broadcastRoll(event.data.data);
       break;
     default:
-      console.log("OWL20-owlbear extension recieved unknown message:", event);
+      //Ignore unknown messages silently
   }
 })
 
 OBR.onReady(() => {
-  console.log("OBR Ready")
+  console.log("owl20-owlbear: OBR Ready")
   OBR.broadcast.onMessage("owl20.roll", (event) => {
       renderRoll(event.data); 
   })
