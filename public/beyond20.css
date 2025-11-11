@@ -77,6 +77,18 @@ h3 {
   background-color: var(--background-paper);
 }
 
+.playerBubble {
+    display:inline-block;
+    overflow:hidden;
+    width : 15px;
+    height: 15px;
+    border-radius: 15px;
+    border-style : solid;
+    border-color : var(--text-primary);
+    border-width :2px;
+    margin-right: 20px;
+    margin-top:5px;
+}
 
 
 
