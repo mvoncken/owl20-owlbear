@@ -1,9 +1,8 @@
 import OBR from "@owlbear-rodeo/sdk";
 import he from 'he';
-
 import "./style.css";
 
-const renderRoll = (request) =>{
+const renderHP = (request) =>{
     let  html = `<h3><span title="${he.encode(request.playerName)}" class=playerBubble style="background-color:${request.playerColor}"></span>${he.encode(request.character)}</h3> ${request.html}`;
   
     /*
@@ -22,16 +21,12 @@ const renderRoll = (request) =>{
     window.scrollTo(0, document.body.scrollHeight);
 }
 
-const broadcastRoll = async (request) => {
-    // load sound every time because I want to play 5 at a time if someone 5-clicked.
-    const sound = new Audio('dice-89594.mp3');
-    sound.load();
-    sound.play();      
-
+const broadcastHP = async (request) => {
+    // load sound every time because I want to play 5 at a time if someone 5-clicked.    
     request.playerColor = await OBR.player.getColor();
     request.playerName = await OBR.player.getName();
 
-    OBR.broadcast.sendMessage("owl20.roll", request, {destination:"ALL"});
+    OBR.broadcast.sendMessage("owl20.hp", request, {destination:"ALL"});
 }
 
 addEventListener("message", (event) => { 
@@ -60,8 +55,8 @@ const themeManager  = async () => {
 
 OBR.onReady(() => {
   console.log("owl20-owlbear: OBR Ready")
-  OBR.broadcast.onMessage("owl20.roll", (event) => {
-      renderRoll(event.data); 
+  OBR.broadcast.onMessage("owl20.hp", (event) => {
+      renderHP(event.data); 
   })
   themeManager()
 })

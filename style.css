@@ -85,12 +85,19 @@ h3 {
     border-radius: 15px;
     border-style : solid;
     border-color : var(--text-primary);
-    border-width :2px;
-    margin-right: 20px;
+    border-width :1.5px;
+    margin-right: 6px;
     margin-top:5px;
 }
-
-
+.playerAvatar {
+    margin-top: 0;
+    margin-right: 5px;
+    border: 1px solid black;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    width:25x;
+    height:25px;
+}
 
 .beyond20-quick-roll-tooltip,
 .beyond20-quick-roll-area {
@@ -214,7 +221,11 @@ h3 {
     flex-direction: row;
 }
 .beyond20-header .beyond20-character-avatar {
-    display: none;
+    margin-top: 0;
+    margin-right: 5px;
+    border: 1px solid black;
+    aspect-ratio: 1/1;
+    object-fit: cover;
 }
 .beyond20-message details {
     flex-grow: 1;
