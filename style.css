@@ -17,7 +17,7 @@ License : https://github.com/kakaroto/Beyond20/blob/master/LICENSE.MIT
     --text-primary: #fff;
     --text-secondary: rgba(255, 255, 255, 0.7);
 
-    --spell-color : #dd33ff;
+    --spell-color : rgb(241, 173, 255);
     --red : #FF5C5C;
     --green : #5CFF5C;
     --green-bg : green;
@@ -25,7 +25,7 @@ License : https://github.com/kakaroto/Beyond20/blob/master/LICENSE.MIT
     --yellow: #FFFF5C;
 
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 400;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -223,7 +223,7 @@ h3 {
 .beyond20-header .beyond20-character-avatar {
     margin-top: 0;
     margin-right: 5px;
-    border: 1px solid black;
+    border-radius: 10px;
     aspect-ratio: 1/1;
     object-fit: cover;
 }
@@ -341,10 +341,6 @@ h3 {
     z-index: 1;
     /* animate*/
     transition: opacity 2s linear;
-}
-
-span.dice-roll.beyond20-tooltip-content {
-    xbackground-color: #f9f9f9;
 }
 
 .beyond20-tooltip:hover .beyond20-tooltip-content {
