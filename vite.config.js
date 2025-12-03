@@ -5,10 +5,8 @@ import * as child from "child_process";
 import generateFile from 'vite-plugin-generate-file'
 import manifest from "./manifest";
 
-const version = `0.2.${child.execSync('git rev-list --count HEAD')}-${child.execSync('git rev-parse --short HEAD')}`.replaceAll('\n','');
-
-
-
+// version should be atomic, derived from the commit hash,
+const version = `1.${child.execSync('git rev-list --count HEAD')}.${child.execSync('git rev-parse --short HEAD')}`.replaceAll('\n','');
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
