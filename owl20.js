@@ -30,7 +30,12 @@ const broadcastRoll = async (request) => {
     sound.play();      
     request.playerColor = await OBR.player.getColor();
     request.playerName = await OBR.player.getName();
-
+    if (typeof request.character  !== 'string') {
+      // Is sometimes an empty object instead of null:
+      // https://discord.com/channels/@me/1383472368621719654/1445786752819265737
+      // fallback tot title, fallback to '*'
+      request.character = request.playerName; 
+    }
     OBR.broadcast.sendMessage("owl20.roll", request, {destination:"ALL"});
 }
 
@@ -42,9 +47,8 @@ const broadcastHP = async (request) => {
     OBR.broadcast.sendMessage("owl20.hp", request, {destination:"ALL"});
 }
 
-
+// Listen to owl20-chrome-plugin events
 addEventListener("message", (event) => { 
-  //broadcastRoll(event) 
   switch(event.data.type) {
     case 'Beyond20_Roll':
       broadcastRoll(event.data.data);

@@ -17,7 +17,7 @@ License : https://github.com/kakaroto/Beyond20/blob/master/LICENSE.MIT
     --text-primary: #fff;
     --text-secondary: rgba(255, 255, 255, 0.7);
 
-    --spell-color : var(--primary-light)
+    --spell-color : var(--primary-light);
     --spell-color-h : var(--secondary-light);
 
     --red : #FF5C5C;
