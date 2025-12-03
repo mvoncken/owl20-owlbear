@@ -1,6 +1,6 @@
-{
+export default {
   "name": "Owl20",
-  "version": "0.2.0",
+  "version": "*see vite.config*",
   "manifest_version": 1,
   "author": "DM Sparks, DM Uberdragon",
   "icon": "/icon.svg",

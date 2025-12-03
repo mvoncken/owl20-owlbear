@@ -1,10 +1,22 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
+import * as child from "child_process";
+import generateFile from 'vite-plugin-generate-file'
+import manifest from "./manifest";
+
+const version = `0.2.${child.execSync('git rev-list --count HEAD')}-${child.execSync('git rev-parse --short HEAD')}`.replaceAll('\n','');
+
+
+
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
+  define: {
+    __VERSION__: JSON.stringify(version),
+  },
+  
   build: {
     rollupOptions: {
       input: {
@@ -13,4 +25,12 @@ export default defineConfig({
       },
     },
   },
+  // write version to manifest
+   plugins: [
+    generateFile([{
+      type: 'json',
+      output: './manifest.json',
+      data: {...manifest, version}
+    }])
+  ]
 })

@@ -3,8 +3,9 @@ import he from 'he';
 import { themeManager } from "./theme";
 import "./style.css";
 
-let prevChar = "prev"
+console.log("owl20-owlbear:version:", __VERSION__)
 
+let prevChar = "prev"
 const renderRoll = (request) =>{
     let html = '';
     const char = `${request.character}-${request.playerName}`;
