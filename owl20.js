@@ -8,14 +8,15 @@ let prevChar = "prev"
 const renderRoll = (request) =>{
     let html = '';
     const char = `${request.character}-${request.playerName}`;
-    if (char !== prevChar) {
-      // only show the character/player header if it changes.
+    // isFirst: only show the character/player header if it changes.
+    const isFirst = (char !== prevChar);   
+    if (isFirst) {
       html = `<h3><span title="${he.encode(request.playerName)}" class=playerBubble style="background-color:${request.playerColor}"></span>${he.encode(request.character)}</h3>`
     }
     html += request.html;
-
     const element = document.querySelector("#rolls-list");
     const node = document.createElement("div");
+    node.className = isFirst ? "player-first" : "player-more"
     node.innerHTML = html;
     element.appendChild(node); 
     window.scrollTo(0, document.body.scrollHeight);

@@ -17,7 +17,9 @@ License : https://github.com/kakaroto/Beyond20/blob/master/LICENSE.MIT
     --text-primary: #fff;
     --text-secondary: rgba(255, 255, 255, 0.7);
 
-    --spell-color : rgb(200, 173, 255);
+    --spell-color : var(--primary-light)
+    --spell-color-h : var(--secondary-light);
+
     --red : #FF5C5C;
     --green : #5CFF5C;
     --green-bg : green;
@@ -49,7 +51,8 @@ body[data-theme="LIGHT"] {
     --text-secondary: rgba(0, 0, 0, 0.6);
 
 
-    --spell-color : rgb(107, 71, 178);
+    --spell-color : var(--primary-dark);
+    --spell-color-h : var(--primary-light);
     --red : darkred;
     --green : darkgreen;
     --green-bg : lightgreen ;
@@ -67,7 +70,7 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: var(--spell-color);
+  color: var(--spell-color-h);
 }
 
 h3 {
@@ -227,6 +230,10 @@ h3 {
     aspect-ratio: 1/1;
     object-fit: cover;
 }
+.player-more .beyond20-header .beyond20-character-avatar {
+    /* only display on first*/
+    display:none;
+}
 .beyond20-message details {
     flex-grow: 1;
 }
@@ -242,6 +249,13 @@ h3 {
     font-weight: 700;
     color: var(--spell-color);
     padding-top: 3px;
+    margin: 0;
+}
+
+.player-more .beyond20-message details summary,
+.beyond20-title {
+    font-size: 18px;
+    padding: 0;
 }
 
 .beyond20-message .beyond20-description,
@@ -282,7 +296,7 @@ h3 {
     box-shadow: 0 0 2px #fff inset;
     font-size: 20px;
     font-weight: bold;
-    font-family: "Signika", "Roboto", serif;
+    /*font-family: "Signika", "Roboto", serif;*/
 }
 
 .beyond20-dice-roller-content .beyond20-roll-dice-formula {
