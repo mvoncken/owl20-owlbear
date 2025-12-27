@@ -1,11 +1,11 @@
-{
+export default {
   "name": "Owl20",
-  "version": "0.2.0",
+  "version": "*see vite.config*",
   "manifest_version": 1,
   "author": "DM Sparks, DM Uberdragon",
   "icon": "/icon.svg",
   "homepage_url": "https://uberdragon.github.io/owl20/",
-  "description": "Roll from DndBeyond using the Beyond20 browser extension,See 'LEARN MORE' for setup instructions",
+  "description": "Roll from DndBeyond using the Beyond20 browser extension,See 'LEARN MORE' for setup instructions ",
   "action": {
     "title": "Owl20 – The Beyond20 Helper",
     "icon": "/icon.svg",

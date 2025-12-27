@@ -1,13 +1,13 @@
 {
-  "name": "Owl20",
+  "name": "Owl20dev",
   "version": "0.2.0",
   "manifest_version": 1,
-  "author": "DM Sparks, DM Uberdragon",
+  "author": "DEV",
   "icon": "/d20.svg",
   "homepage_url": "https://uberdragon.github.io/owl20/",
   "description": "FOR LOCALHOST DEV, just a different icon",
   "action": {
-    "title": "Owl20 – The Beyond20 Helper",
+    "title": "Owl20 – DEV",
     "icon": "/d20.svg",
     "popover": "/owl20.html",
     "height": 1200,

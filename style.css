@@ -62,7 +62,7 @@ body[data-theme="LIGHT"] {
 }
 
 body {
-        color: var(--text-primary);  
+    color: var(--text-primary);  
 }
 
 a {
@@ -73,11 +73,15 @@ a:hover {
   color: var(--spell-color-h);
 }
 
-h3 {
+h3.player {
   margin:0;
   margin-top: 12px;
   width:100%;
   background-color: var(--background-paper);
+}
+
+.player a {
+   color:var(--text-primary)
 }
 
 .playerBubble {
@@ -452,8 +456,9 @@ h3 {
     display:none;
 }
 summary:hover {
-    background-color: var(--background-paper);
-    border-radius: 10px;
+    x-background-color: var(--background-paper);
+    x-border-radius: 10px;
+    cursor: pointer; 
 }
 summary {
     color: var(--spell-color);

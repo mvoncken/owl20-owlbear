@@ -3,17 +3,20 @@ import he from 'he';
 import { themeManager } from "./theme";
 import "./style.css";
 
-let prevChar = "prev"
+console.log("owl20-owlbear:version:", __VERSION__)
 
-const renderRoll = (request) =>{
+let prevChar = "prev"
+const renderRoll = (roll) =>{
     let html = '';
-    const char = `${request.character}-${request.playerName}`;
+    const char = `${roll.character}-${roll.playerName}`;
+    // characters have a url, monsters have an avatar, have not seen any other rolls.
+    const charUrl = roll.request?.character?.url || roll.request?.character?.avatar;
     // isFirst: only show the character/player header if it changes.
     const isFirst = (char !== prevChar);   
     if (isFirst) {
-      html = `<h3><span title="${he.encode(request.playerName)}" class=playerBubble style="background-color:${request.playerColor}"></span>${he.encode(request.character)}</h3>`
+      html = `<h3 class="player"><span title="${he.encode(roll.playerName)}" class=playerBubble style="background-color:${roll.playerColor}"></span><a href="${charUrl}" target="_new">${he.encode(roll.character)}</a></h3>`
     }
-    html += request.html;
+    html += roll.html;
     const element = document.querySelector("#rolls-list");
     const node = document.createElement("div");
     node.className = isFirst ? "player-first" : "player-more"
@@ -23,28 +26,30 @@ const renderRoll = (request) =>{
     prevChar = char;
 }
 
-const broadcastRoll = async (request) => {
+const broadcastRoll = async (roll) => {
     // load sound every time because I want to play 3 at a time if someone 3-clicked.
     const sound = new Audio('dice-89594.mp3');
     sound.load();
     sound.play();      
-    request.playerColor = await OBR.player.getColor();
-    request.playerName = await OBR.player.getName();
-    if (typeof request.character  !== 'string') {
+    roll.playerColor = await OBR.player.getColor();
+    roll.playerName = await OBR.player.getName();
+
+    console.log("broadcastRoll", roll)
+    if (typeof roll.character  !== 'string') {
       // Is sometimes an empty object instead of null:
       // https://discord.com/channels/@me/1383472368621719654/1445786752819265737
       // fallback tot title, fallback to '*'
-      request.character = request.playerName; 
+      roll.character = roll.playerName; 
     }
-    OBR.broadcast.sendMessage("owl20.roll", request, {destination:"ALL"});
+    OBR.broadcast.sendMessage("owl20.roll", roll, {destination:"ALL"});
 }
 
-const broadcastHP = async (request) => {
+const broadcastHP = async (payload) => {
     // This broadast can be picked up by other extensions.
-    request.playerColor = await OBR.player.getColor();
-    request.playerName = await OBR.player.getName();
+    payload.playerColor = await OBR.player.getColor();
+    payload.playerName = await OBR.player.getName();
 
-    OBR.broadcast.sendMessage("owl20.hp", request, {destination:"ALL"});
+    OBR.broadcast.sendMessage("owl20.hp", payload, {destination:"ALL"});
 }
 
 // Listen to owl20-chrome-plugin events
