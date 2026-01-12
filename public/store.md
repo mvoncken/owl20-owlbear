@@ -5,12 +5,8 @@ author: DM Sparks & DM Uberdragon
 image: https://owl20.friendlymimic.com/hero.png
 icon: https://owl20.friendlymimic.com/owl20-128.png
 tags:
-  - dndbeyond
-  - beyond20
-  - roll
-  - owl20
-  - connect
-  - integration
+  - combat
+  - automation
 manifest: https://owl20.friendlymimic.com/manifest.json
 learn-more: https://owl20.uberdragon.org/
 ---
