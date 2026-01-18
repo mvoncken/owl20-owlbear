@@ -18,7 +18,7 @@ Owl20 connects DnDBeyond.com with Owlbear Rodeo VTT by capturing roll data from 
 * You can view the rolls of other players without installing the browser extension.
 * To roll from D&D Beyond you do need to install the browser extension.
 
-![Demo video](https://owl20.friendlymimic.com/showcase.mp4)
+![Rolling a few dice](https://owl20.friendlymimic.com/showcase.gif)
 
 ## Configuration instructions:
 
