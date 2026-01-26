@@ -1,9 +1,9 @@
 # Changelog
 
+*Significant changes only, this has to be readable*
+
 ## 1.21 2025-12-26
-* Character header links back to character sheet.
-## 1.23 2026-01-13
-* store.md for official extension store
-* Intro message when a user opens the open the extension tab.
-## 1.24 2026-01-15
-* Reduce video size for official store approval, update Changelog.
+* Character header links back to the character sheet on dndbeyond.
+## 1.27 2026-01-26
+* When you roll initiative it's added to the oficiall tracker if the token-text and character-name are an exact! match.
+
