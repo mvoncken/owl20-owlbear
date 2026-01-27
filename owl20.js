@@ -66,14 +66,14 @@ const handleInitiative = async (roll) => {
   const topRoll = initiativeRolls[0];
   if (!topRoll) return;    
   
-  // writing into metadata to be picked up by initiative tracker
+  // writing into metadata to be picked up by official initiative tracker
   const META_INIT = 'rodeo.owlbear.initiative-tracker/metadata'
   OBR.scene.items.updateItems([token],(items) => 
     items.forEach(
       item => item.metadata[META_INIT] = {count:topRoll.toString(), active:false}
   ))
   // Broadcast so other extensions can pick it up too.
-  OBR.broadcast.sendMessage("owl20.initiative", {character:roll.character,roll:topRoll}, {destination:"LOCAL"});
+  OBR.broadcast.sendMessage("owl20.initiative", {id:token.id, character:roll.character, roll:topRoll}, {destination:"LOCAL"});
 }
 
 
