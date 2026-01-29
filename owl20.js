@@ -87,20 +87,6 @@ const broadcastHP = async (payload) => {
     OBR.broadcast.sendMessage("owl20.hp", payload, {destination:"ALL"});
 }
 
-// Listen to owl20-chrome-plugin events
-addEventListener("message", (event) => { 
-  switch(event.data.type) {
-    case 'Beyond20_Roll':
-      broadcastRoll(event.data.data);
-      handleInitiative(event.data.data);
-      break;
-    case 'Beyond20_UpdateHP':
-      broadcastHP(event.data.data);
-      break;      
-    default:
-      //Ignore unknown messages silently
-  }
-})
 
 OBR.onReady(async () => {
   console.log("owl20-owlbear: OBR Ready")
@@ -119,4 +105,40 @@ OBR.onReady(async () => {
   }, 1000*60*60);
 })
 
+
+
+// Listen to owl20-chrome-plugin events
+addEventListener("message", (event) => { 
+  switch(event.data.type) {
+    case 'Beyond20_Roll':
+      broadcastRoll(event.data.data);
+      handleInitiative(event.data.data);
+      break;
+    case 'Beyond20_UpdateHP':
+      broadcastHP(event.data.data);
+      break;      
+    default:
+      //Ignore unknown messages silently
+  }
+})
+
+// Experimental: direct beyonds20 listener without owl20-chrome-plugin inbetween
+// This requires that my patches to beyond20 are accepted.
+function addBeyond20EventListener(name, callback) {
+    const event = ["Beyond20_" + name, (evt) => {
+        const detail = evt.detail || [];
+        callback(...detail)
+    }, false];
+    document.addEventListener(...event);
+    return event;
+}
+
+addBeyond20EventListener("Loaded", () => 
+    document.querySelector("#loaded").innerText="✅Beyond20 connected");
+
+addBeyond20EventListener("rendered-roll", (request) => {
+      broadcastRoll(request);
+      handleInitiative(request);
+})
+// debug
 window.OBR = OBR
