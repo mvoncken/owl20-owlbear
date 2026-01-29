@@ -134,9 +134,9 @@ function addBeyond20EventListener(name, callback) {
 }
 
 addBeyond20EventListener("Loaded", () => 
-    document.querySelector("#loaded").innerText="✅Beyond20 connected");
+    document.querySelector("#loaded").innerText="Beyond20 connected ✅");
 
-addBeyond20EventListener("rendered-roll", (request) => {
+addBeyond20EventListener("RenderedRoll", (request) => {
       broadcastRoll(request);
       handleInitiative(request);
 })
