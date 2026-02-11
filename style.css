@@ -85,6 +85,8 @@ h3.player {
 }
 
 .playerBubble {
+    position:relative;
+    top: 2px;
     display:inline-block;
     overflow:hidden;
     width : 15px;

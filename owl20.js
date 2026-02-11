@@ -7,15 +7,24 @@ import "./style.css";
 console.log("owl20-owlbear:version:", __VERSION__)
 
 let prevChar = "prev"
-const renderRoll = (roll) =>{
+const renderRoll = async (roll) =>{
+    if (roll.whisper) {
+      const playerName = await OBR.player.getName();
+      const role = await OBR.player.getRole();
+      // show if DM or same player, otherwise return
+      if (role !== "GM" && roll.playerName !== playerName) {
+        return;
+      }  
+    }
+
     let html = '';
-    const char = `${roll.character}-${roll.playerName}`;
+    const char = `${roll.whisper}${roll.character}-${roll.playerName}`;
     // characters have a url, monsters have an avatar, have not seen any other rolls.
     const charUrl = roll.request?.character?.url || roll.request?.character?.avatar;
     // isFirst: only show the character/player header if it changes.
     const isFirst = (char !== prevChar);   
     if (isFirst) {
-      html = `<h3 class="player"><span title="${he.encode(roll.playerName)}" class=playerBubble style="background-color:${roll.playerColor}"></span><a href="${charUrl}" target="_new">${he.encode(roll.character)}</a></h3>`
+      html = `<h3 class="player"><span title=">${he.encode(roll.playerName)}" class=playerBubble style="background-color:${roll.playerColor}"></span><a href="${charUrl}" target="_new">${roll.whisper ? 'ⓦ ' : ''}${he.encode(roll.character)}</a></h3>`
     }
     html += roll.html;
     const element = document.querySelector("#rolls-list");
