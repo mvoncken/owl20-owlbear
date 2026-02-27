@@ -6,6 +6,7 @@ export default {
   "icon": "/icon.svg",
   "homepage_url": "https://uberdragon.github.io/owl20/",
   "description": "Roll from DndBeyond using the Beyond20 browser extension.",
+  "permissions": ["autoplay"],
   "action": {
     "title": "Owl20 – The Beyond20 Helper",
     "icon": "/icon.svg",
