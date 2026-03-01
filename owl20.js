@@ -1,6 +1,7 @@
 import OBR from "@owlbear-rodeo/sdk";
 import { isImage } from "@owlbear-rodeo/sdk";
 import he from 'he';
+import DOMPurify from 'dompurify';
 import { themeManager } from "./theme";
 import "./style.css";
 
@@ -30,7 +31,7 @@ const renderRoll = async (roll) =>{
     const element = document.querySelector("#rolls-list");
     const node = document.createElement("div");
     node.className = isFirst ? "player-first" : "player-more"
-    node.innerHTML = html;
+    node.innerHTML = DOMPurify.sanitize(html);
     element.appendChild(node); 
     window.scrollTo(0, document.body.scrollHeight);
     prevChar = char;

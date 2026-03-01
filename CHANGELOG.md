@@ -10,3 +10,5 @@
 * Listen to whisper settings in beyond20. Whispered messages get a Ⓦ
 ## 2026-02-27
 Add autoplay as a default permission
+## 2026-03-01
+Add dompurify for external html from  beyond20
