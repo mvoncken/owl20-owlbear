@@ -116,6 +116,21 @@ OBR.onReady(async () => {
 })
 
 
+const handleLoaded = (settings) => {
+  console.log("owl20-owlbear: Beyond20 loaded", settings);
+  document.querySelector("#loaded").style.display = "block";
+  document.querySelector("#not-loaded").style.display = "none";
+}
+
+const handleSettings = (settings) => {
+  console.log("owl20-owlbear: Beyond20 settings updated", settings);
+}
+
+const handleBrokenSettings = (warnings) => {
+  const el = document.querySelector("#warnings");
+  el.innerHTML = warnings.map(({id, message}) => `<li id="${id}">⚠️ ${DOMPurify.sanitize(message)}</li>`).join('');
+}
+
 
 // Listen to owl20-chrome-plugin events
 addEventListener("message", (event) => { 
@@ -123,6 +138,20 @@ addEventListener("message", (event) => {
     case 'Beyond20_Roll':
       broadcastRoll(event.data.data);
       handleInitiative(event.data.data);
+      break;
+
+    case 'Beyond20_UpdateHP':
+      broadcastHP(event.data.data);
+      break;    
+    case 'Beyond20_Loaded':
+      handleLoaded(event.data.data)
+      handleSettings(event.data.data)
+      break;    
+    case 'Beyond20_NewSettings':
+      handleSettings(event.data.data)
+      break;
+    case 'Beyond20_BrokenSettings':
+      handleBrokenSettings(event.data.data.warnings)
       break;
     case 'Beyond20_UpdateHP':
       broadcastHP(event.data.data);
@@ -133,7 +162,7 @@ addEventListener("message", (event) => {
 })
 
 // Experimental: direct beyonds20 listener without owl20-chrome-plugin inbetween
-// This requires that my patches to beyond20 are accepted.
+// This requires that my patches to beyond20 are accepted, and that is not easy.
 function addBeyond20EventListener(name, callback) {
     const event = ["Beyond20_" + name, (evt) => {
         const detail = evt.detail || [];
@@ -142,9 +171,6 @@ function addBeyond20EventListener(name, callback) {
     document.addEventListener(...event);
     return event;
 }
-
-addBeyond20EventListener("Loaded", () => 
-    document.querySelector("#loaded").innerHTML="<li>✅ Beyond20 connected </li>");
 
 addBeyond20EventListener("RenderedRoll", (request) => {
       broadcastRoll(request);
