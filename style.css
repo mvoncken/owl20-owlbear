@@ -62,7 +62,8 @@ body[data-theme="LIGHT"] {
 }
 
 body {
-    color: var(--text-primary);  
+    color: var(--text-primary);
+    caret-color: transparent;
 }
 
 a {

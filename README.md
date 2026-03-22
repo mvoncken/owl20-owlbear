@@ -4,6 +4,11 @@ View rolls from dndbeyond in owlbear!
 
 This project depends on the Owl20 browser extension to function [https://github.com/uberdragon/owl20] We collaborate on this.
 
+
+## Developers
+It's a major goal to make the code as simple and readable as possible, reduce compexity to make it easy to read, edit and contribute.
+No need for frameworks with less than 200 lines of code (owl20.js).
+
 ## Users
 
 Follow the instructions at  [https://uberdragon.github.io/owl20/]
