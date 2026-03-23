@@ -1,6 +1,55 @@
 import OBR from "@owlbear-rodeo/sdk";
 import { isImage } from "@owlbear-rodeo/sdk";
+/*
+Things thar are not core functionality but are nice to have.
+*/
 
+export const checkBrokenSettings = (settings) => {
+  // initial version by Uberdragon.
+  const warnings = [];
+
+  if (!settings) return warnings;
+
+  // Digital dice produce pre-rendered HTML without structured roll data;
+  // owl20 receives the rendered result but the Owlbear extension may not be
+  // able to parse dice details from it.
+  if (settings['use-digital-dice'] === true) {
+    warnings.push({
+      id: 'digital-dice',
+      message:
+        'ℹ️ D&D Beyond Digital Dice is enabled. This is a frequent cause of issues.' +
+        ' It\'s best to disable them, to avoid current or future problems.' 
+    });
+  }
+
+  // Whispered rolls are not dispatched to VTTs via the DOM API, so they will
+  // never reach owl20 / the Owlbear extension.
+  if (settings['whisper-type'] !== undefined && settings['whisper-type'] !== '0' && settings['whisper-type'] !== 0) {
+    warnings.push({
+      id: 'whisper-rolls',
+      message:
+        'ℹ️ Beyond20 "Whisper Rolls to GM" is enabled, these will display with a ⓦ.'
+      });
+  }
+
+  // When Discord integration is active Beyond20 may redirect output away
+  // from the page, bypassing the DOM events that owl20 listens to.
+  if (Array.isArray(settings['discord-channels']) && settings['discord-channels'].some(c => c.active === true)) {
+    warnings.push({
+      id: 'discord',
+      message:
+        '⚠️ Beyond20 Discord integration is enabled. Some roll events may be ' +
+        'redirected to Discord instead of the page, and may not reach Owlbear Rodeo.'
+    });
+  }
+
+  return warnings;
+}
+
+/*
+handleInitiative
+This depends on a token with exaclty the same name as the charatcter.ion. 
+*/
 export const handleInitiative = async (roll) => {
   if (!roll.request?.type === 'initiative') return;
   // the text label on the token must match the rolled name

@@ -1,6 +1,6 @@
 import OBR from "@owlbear-rodeo/sdk";
 import he from 'he';
-import { handleInitiative, broadcastHP } from "./owl20-extras";
+import { handleInitiative, broadcastHP, checkBrokenSettings } from "./owl20-extras";
 import DOMPurify from 'dompurify';
 import { themeManager } from "./theme";
 import "./style.css";
@@ -75,20 +75,17 @@ OBR.onReady(async () => {
 
 
 const handleLoaded = (settings) => {
-  console.log("owl20-owlbear: Beyond20 loaded", settings);
   document.querySelector("#loaded").style.display = "block";
   document.querySelector("#not-loaded").style.display = "none";
+  handleSettings(settings);
 }
 
 const handleSettings = (settings) => {
   console.log("owl20-owlbear: Beyond20 settings updated", settings);
+  const el = document.querySelector("#broken-settings");
+  const warnings = checkBrokenSettings(settings);
+  el.innerHTML = warnings.map(({message}) => `<li>${DOMPurify.sanitize(message)}</li>`).join('');
 }
-
-const handleBrokenSettings = (warnings) => {
-  const el = document.querySelector("#warnings");
-  el.innerHTML = warnings.map(({id, message}) => `<li id="${id}">⚠️ ${DOMPurify.sanitize(message)}</li>`).join('');
-}
-
 
 // Listen to owl20-chrome-plugin events
 addEventListener("message", (event) => { 
@@ -102,13 +99,9 @@ addEventListener("message", (event) => {
       break;    
     case 'Beyond20_Loaded':
       handleLoaded(event.data.data)
-      handleSettings(event.data.data)
       break;    
     case 'Beyond20_NewSettings':
       handleSettings(event.data.data)
-      break;
-    case 'Beyond20_BrokenSettings':
-      handleBrokenSettings(event.data.data.warnings)
       break;
     case 'Beyond20_UpdateHP':
       broadcastHP(event.data.data);
