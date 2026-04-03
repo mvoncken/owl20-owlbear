@@ -73,6 +73,9 @@ a {
 a:hover {
   color: var(--spell-color-h);
 }
+ul {
+    padding-inline-start: 5px;
+}
 
 h3.player {
   margin:0;
