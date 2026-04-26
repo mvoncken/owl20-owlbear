@@ -62,15 +62,7 @@ OBR.onReady(async () => {
       renderRoll(event.data); 
   })
   themeManager()
-  // sa-event : slug is unique enough, but non identifyable unless you're in the game.
-  const players = (await OBR.party.getPlayers()).length + 1;
-  window.sa_event("room",{ slug: OBR.room.id.substring(0,4), players });
 
-  setTimeout(async ()=>{
-      // 60 minutes+ is a session, and will catch num players more correctly since half don't have tracking.
-      const pl = (await OBR.party.getPlayers()).length + 1;
-      window.sa_event("t60",{ slug: OBR.room.id.substring(0,4), players:pl });
-  }, 1000*60*60);
 })
 
 
