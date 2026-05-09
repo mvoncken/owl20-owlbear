@@ -50,9 +50,15 @@ const broadcastRoll = async (roll) => {
       // Is sometimes an empty object instead of null:
       // https://discord.com/channels/@me/1383472368621719654/1445786752819265737
       // fallback tot title, fallback to '*'
-      roll.character = roll.playerName; 
+      roll.character = roll.playerName;
     }
     OBR.broadcast.sendMessage("owl20.roll", roll, {destination:"ALL"});
+    OBR.broadcast.sendMessage("com.friendlymimic.mimic-chat/html", {
+      origin: "com.friendlymimic.owl20",
+      title: roll.character,
+      gmOnly: !!roll.whisper,
+      html: roll.html,
+    }, {destination:"ALL"});
 }
 
 
