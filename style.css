@@ -485,3 +485,18 @@ summary {
     flex-direction: column;
     white-space: nowrap;
 }
+
+.beyond20-description .owl20-section {
+    font-weight: bold;
+    color: var(--primary-main);
+    border-bottom: 1px solid var(--primary-dark);
+    margin: 6px 0 2px;
+}
+
+/* stats, traits and actions get an li dot */
+.beyond20-description .owl20-stat,
+.beyond20-description .owl20-trait {
+    display: list-item;
+    list-style: disc outside;
+    margin: 3px 0 0 1.1em;
+}
