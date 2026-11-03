@@ -79,7 +79,14 @@ const renderRoll = async (roll, persist = true) =>{
 }
 
 // Beyond20 flattens stat blocks with <br><br><br> between every line, collapse those runs.
-const collapseBrRuns = (html) => html?.replace(/(?:<br\s*\/?>\s*){3,}/gi, '<br>');
+// Then wrap the STR..CHA lines (label<br>score<br>, six times) in a grid row: .owl20-abilities
+const BR = '<br\\s*/?>';
+const ABILITIES = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'];
+const ABILITY_ROW_RE = new RegExp(ABILITIES.map(a => `\\b(${a})${BR}((?:(?!${BR})[\\s\\S])*)`).join(BR) + `(?:${BR})?`, 'i');
+const collapseBrRuns = (html) => html
+  ?.replace(/(?:<br\s*\/?>\s*){3,}/gi, '<br>')
+  .replace(ABILITY_ROW_RE, (...m) => '<div class="owl20-abilities">' +
+    ABILITIES.map((_, i) => `<div><b>${m[1 + i * 2]}</b><span>${m[2 + i * 2]}</span></div>`).join('') + '</div>');
 
 const broadcastRoll = async (roll) => {
     roll.html = collapseBrRuns(roll.html);

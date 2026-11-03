@@ -469,3 +469,19 @@ summary:hover {
 summary {
     color: var(--spell-color);
 }
+/* STR..CHA row, built by collapseBrRuns in owl20.js */
+.owl20-abilities {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    text-align: center;
+    margin: 4px 0;
+    padding: 2px 0;
+    border-top: 1px solid var(--primary-dark);
+    border-bottom: 1px solid var(--primary-dark);
+}
+
+.owl20-abilities > div {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+}
