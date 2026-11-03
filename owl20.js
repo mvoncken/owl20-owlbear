@@ -7,8 +7,48 @@ import "./style.css";
 
 console.log("owl20-owlbear:version:", __VERSION__)
 
+// Rolling log in localStorage: one key per roll, MAX_HISTORY slots reused
+// round-robin, plus a counter with the total number of rolls written.
+const MAX_HISTORY = 100;
+const historyPrefix = () => `owl20.history.${OBR.room.id}`;
+const counterKey = () => `${historyPrefix()}.count`;
+const slotKey = (n) => `${historyPrefix()}.${n % MAX_HISTORY}`;
+
+const loadHistory = () => {
+  const count = parseInt(localStorage.getItem(counterKey())) || 0;
+  const rolls = [];
+  for (let n = Math.max(0, count - MAX_HISTORY); n < count; n++) {
+    try {
+      const roll = JSON.parse(localStorage.getItem(slotKey(n)));
+      if (roll) rolls.push(roll);
+    } catch (e) {
+      console.warn("owl20-owlbear: skipping broken history entry", n, e);
+    }
+  }
+  return rolls;
+}
+
+const saveToHistory = (roll) => {
+  // only keep what renderRoll needs, the full request can be large.
+  const entry = JSON.stringify({
+    whisper: roll.whisper,
+    character: roll.character,
+    playerName: roll.playerName,
+    playerColor: roll.playerColor,
+    charUrl: roll.charUrl,
+    html: roll.html,
+  });
+  const count = parseInt(localStorage.getItem(counterKey())) || 0;
+  try {
+    localStorage.setItem(slotKey(count), entry);
+    localStorage.setItem(counterKey(), count + 1);
+  } catch (e) {
+    console.warn("owl20-owlbear: could not save roll to history", e);
+  }
+}
+
 let prevChar = "prev"
-const renderRoll = async (roll) =>{
+const renderRoll = async (roll, persist = true) =>{
     if (roll.whisper) {
       const playerName = await OBR.player.getName();
       const role = await OBR.player.getRole();
@@ -21,7 +61,7 @@ const renderRoll = async (roll) =>{
     let html = '';
     const char = `${roll.whisper}${roll.character}-${roll.playerName}`;
     // characters have a url, monsters have an avatar, have not seen any other rolls.
-    const charUrl = roll.request?.character?.url || roll.request?.character?.avatar;
+    const charUrl = roll.charUrl || roll.request?.character?.url || roll.request?.character?.avatar;
     // isFirst: only show the character/player header if it changes.
     const isFirst = (char !== prevChar);   
     if (isFirst) {
@@ -35,9 +75,14 @@ const renderRoll = async (roll) =>{
     element.appendChild(node); 
     window.scrollTo(0, document.body.scrollHeight);
     prevChar = char;
+    if (persist) saveToHistory({...roll, charUrl});
 }
 
+// Beyond20 flattens stat blocks with <br><br><br> between every line, collapse those runs.
+const collapseBrRuns = (html) => html?.replace(/(?:<br\s*\/?>\s*){3,}/gi, '<br>');
+
 const broadcastRoll = async (roll) => {
+    roll.html = collapseBrRuns(roll.html);
     // load sound every time because I want to play 3 at a time if someone 3-clicked.
     const sound = new Audio('dice-89594.mp3');
     sound.load();
@@ -64,6 +109,9 @@ const broadcastRoll = async (roll) => {
 
 OBR.onReady(async () => {
   console.log("owl20-owlbear: OBR Ready")
+  for (const roll of loadHistory()) {
+    await renderRoll(roll, false);
+  }
   OBR.broadcast.onMessage("owl20.roll", (event) => {
       renderRoll(event.data); 
   })
