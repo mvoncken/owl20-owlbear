@@ -80,6 +80,8 @@ const renderRoll = async (roll, persist = true) =>{
 }
 
 const broadcastRoll = async (roll) => {
+    // debug: in the popover console, copy(owl20LastRawHtml) gives a fragment for statblock.js
+    window.owl20LastRawHtml = roll.html;
     roll.html = collapseBrRuns(roll.html);
     // load sound every time because I want to play 3 at a time if someone 3-clicked.
     const sound = new Audio('dice-89594.mp3');
