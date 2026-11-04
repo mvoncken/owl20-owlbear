@@ -516,3 +516,25 @@ summary {
     font-style: italic;
     margin-bottom: 2px;
 }
+
+/* description paragraphs, see formatProse in statblock.js */
+.beyond20-description .owl20-p {
+    margin: 0 0 0.6em;
+}
+.beyond20-description .owl20-p:last-child {
+    margin-bottom: 0;
+}
+
+/* 2024 layout: label column + STR..CHA, rows: name, score, Mod, Save */
+.owl20-abilities.owl20-abilities-2024 {
+    grid-template-columns: auto repeat(6, 1fr);
+    column-gap: 2px;
+}
+.owl20-abilities-2024 > div:nth-child(7n+1) {
+    text-align: left;
+    font-size: 0.85em;
+    opacity: 0.8;
+}
+.owl20-abilities-2024 > div:nth-child(-n+7) {
+    font-weight: bold;
+}
