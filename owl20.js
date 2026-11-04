@@ -3,6 +3,7 @@ import he from 'he';
 import { handleInitiative, broadcastHP, checkBrokenSettings } from "./owl20-extras";
 import DOMPurify from 'dompurify';
 import { themeManager } from "./theme";
+import { collapseBrRuns } from "./statblock";
 import "./style.css";
 
 console.log("owl20-owlbear:version:", __VERSION__)
@@ -77,54 +78,6 @@ const renderRoll = async (roll, persist = true) =>{
     prevChar = char;
     if (persist) saveToHistory({...roll, charUrl});
 }
-
-// Beyond20 flattens stat blocks with <br><br><br> between every line, collapse those runs.
-// Then wrap the STR..CHA lines (label<br>score<br>, six times) in a grid row: .owl20-abilities
-const BR = '<br\\s*/?>';
-const ABILITIES = ['STR', 'DEX', 'CON', 'INT', 'WIS', 'CHA'];
-const ABILITY_ROW_RE = new RegExp(ABILITIES.map(a => `\\b(${a})${BR}((?:(?!${BR})[\\s\\S])*)`).join(BR) + `(?:${BR})?`, 'i');
-const ABILITY_ROW_START = '<div class="owl20-abilities">';
-
-// Below the ability row, one line per stat/trait/action; give them structure:
-// "Actions" -> section header, "Chilling Rend. ..." -> bold-italic name, "Armor Class ..." -> bold label.
-const SECTION_RE = /^(?:Traits|Actions|Bonus Actions|Reactions|Legendary Actions|Mythic Actions|Lair Actions)$/i;
-const TRAIT_RE = /^[A-Z][\w'’-]*(?: (?:[A-Z0-9][\w'’\/-]*|of|the|and|or|from|to|a|an|in|on|with))*(?: \([^()<]{1,30}\))?\.(?=\s)/;
-const STAT_RE = /^(?:Armor Class|Hit Points|Speed|Saving Throws|Skills|Damage Vulnerabilities|Damage Resistances|Damage Immunities|Condition Immunities|Senses|Languages|Challenge|Proficiency Bonus)\b/;
-
-const formatStatLine = (line) => {
-  const t = line.trim();
-  if (!t) return '';
-  if (SECTION_RE.test(t)) return `<div class="owl20-section">${t}</div>`;
-  const trait = t.match(TRAIT_RE);
-  if (trait) return `<div class="owl20-trait"><b><i>${trait[0]}</i></b>${t.slice(trait[0].length)}</div>`;
-  const stat = t.match(STAT_RE);
-  if (stat) return `<div class="owl20-stat"><b>${stat[0]}</b>${t.slice(stat[0].length)}</div>`;
-  return `<div>${t}</div>`;
-}
-
-const formatStatblock = (html) => {
-  const start = html.indexOf(ABILITY_ROW_START);
-  if (start === -1) return html;
-  const tailStart = html.indexOf('</div></div>', start) + '</div></div>'.length;
-  // the description div holds no other divs, so its first </div> ends the stat block.
-  const tailEnd = html.indexOf('</div>', tailStart);
-  if (tailEnd === -1) return html;
-  const tail = html.slice(tailStart, tailEnd).split(new RegExp(BR, 'i')).map(formatStatLine).join('');
-  // Armor Class / Hit Points / Speed come right above the ability row: bold their labels too.
-  const head = html.slice(0, start).split(new RegExp(BR, 'i'));
-  for (let i = head.length - 1; i >= 0; i--) {
-    if (!head[i].trim()) continue;
-    const stat = head[i].match(STAT_RE);
-    if (!stat) break;
-    head[i] = `<b>${stat[0]}</b>${head[i].slice(stat[0].length)}`;
-  }
-  return head.join('<br>') + html.slice(start, tailStart) + tail + html.slice(tailEnd);
-}
-
-const collapseBrRuns = (html) => html && formatStatblock(html
-  .replace(/(?:<br\s*\/?>\s*){3,}/gi, '<br>')
-  .replace(ABILITY_ROW_RE, (...m) => ABILITY_ROW_START +
-    ABILITIES.map((_, i) => `<div><b>${m[1 + i * 2]}</b><span>${m[2 + i * 2]}</span></div>`).join('') + '</div>'));
 
 const broadcastRoll = async (roll) => {
     roll.html = collapseBrRuns(roll.html);
